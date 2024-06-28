@@ -1,6 +1,9 @@
 import { Table } from "flowbite-react";
 import { useDispatch } from "react-redux";
-import { editIsModal } from "../store/StudentSlice/StudentSlice";
+import {
+  addModalStudentId,
+  editIsModal,
+} from "../store/StudentSlice/StudentSlice";
 
 export function StudentsTable({ student }) {
   const dispatch = useDispatch();
@@ -14,7 +17,10 @@ export function StudentsTable({ student }) {
         <Table.Cell>
           <div className="flex gap-[10px]">
             <button
-              onClick={() => dispatch(editIsModal())}
+              onClick={() => {
+                dispatch(editIsModal());
+                dispatch(addModalStudentId(student.id));
+              }}
               className="font-medium text-cyan-600 hover:underline dark:text-cyan-500"
             >
               Edit

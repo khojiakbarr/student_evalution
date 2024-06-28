@@ -64,7 +64,12 @@ const StudentSlice = createSlice({
   },
 });
 
-export const { addStudents, editStudent, deleteStudent, editIsModal } =
-  StudentSlice.actions;
+export const {
+  addStudents,
+  editStudent,
+  deleteStudent,
+  editIsModal,
+  addModalStudentId,
+} = StudentSlice.actions;
 
 export default StudentSlice.reducer;

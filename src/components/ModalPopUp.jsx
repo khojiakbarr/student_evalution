@@ -1,18 +1,26 @@
 "use client";
 
 import { Button, Modal } from "flowbite-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { editIsModal } from "../store/StudentSlice/StudentSlice";
 
 export function ModalPopUp() {
+  const [studentModal, setStudentId] = useState(null);
+  const students = useSelector((state) => state.student.students);
   const isModal = useSelector((state) => state.student.isModal);
+  const studentIdModal = useSelector((state) => state.student.ModalStudentId);
   const dispatch = useDispatch();
+  
+  useEffect(() => {
+    const student = students.find((stud) => stud.id === studentIdModal);
+    setStudentId(student);
+  }, [isModal]);
 
   return (
     <>
       <Modal show={isModal} onClose={() => dispatch(editIsModal())}>
-        <Modal.Header>Terms of Service</Modal.Header>
+        <Modal.Header>{studentModal?.firstName}</Modal.Header>
         <Modal.Body>
           <div className="space-y-6">
             <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
