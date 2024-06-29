@@ -29,7 +29,26 @@ const StudentSlice = createSlice({
   },
   reducers: {
     addStudents: (state, action) => {
-      state.students = [...state.students, { ...action.payload, id: uid() }];
+      state.students = [
+        ...state.students,
+        {
+          ...action.payload,
+          id: uid(),
+          evalutions: [
+            { day1: 0 },
+            { day2: 0 },
+            { day3: 0 },
+            { day4: 0 },
+            { day5: 0 },
+            { day6: 0 },
+            { day7: 0 },
+            { day8: 0 },
+            { day9: 0 },
+            { day10: 0 },
+            { day11: 0 },
+          ],
+        },
+      ];
     },
     editStudent: (state, action) => {
       state.students = state.students.map((student) => {

@@ -1,45 +1,69 @@
-"use client";
-
-import { Button, Modal } from "flowbite-react";
-import { useEffect, useState } from "react";
+import { Button, FloatingLabel, Modal, TextInput } from "flowbite-react";
+import { useEffect, useMemo, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { editIsModal } from "../store/StudentSlice/StudentSlice";
+import { editIsModal, editStudent } from "../store/StudentSlice/StudentSlice";
 
 export function ModalPopUp() {
-  const [studentModal, setStudentId] = useState(null);
+  const dispatch = useDispatch();
+  // const [studentModal, setStudentId] = useState(null);
   const students = useSelector((state) => state.student.students);
   const isModal = useSelector((state) => state.student.isModal);
   const studentIdModal = useSelector((state) => state.student.ModalStudentId);
-  const dispatch = useDispatch();
-  
-  useEffect(() => {
+  const [handleInput, setHandleInput] = useState({});
+
+  const studentModal = useMemo(() => {
     const student = students.find((stud) => stud.id === studentIdModal);
-    setStudentId(student);
-  }, [isModal]);
+    setHandleInput({
+      firstName: student?.firstName,
+      lastName: student?.lastName,
+    });
+    return student;
+  }, [studentIdModal, isModal]);
+
+  const handleSubmitForm = (e) => {
+    e.preventDefault();
+    console.log(handleInput);
+    dispatch(editIsModal());
+    // dispatch(editStudent({ id: studentModal?.id, data: handleInput }));
+  };
 
   return (
     <>
       <Modal show={isModal} onClose={() => dispatch(editIsModal())}>
-        <Modal.Header>{studentModal?.firstName}</Modal.Header>
+        <Modal.Header>{`${studentModal?.firstName}${" "}${
+          studentModal?.lastName
+        }`}</Modal.Header>
         <Modal.Body>
-          <div className="space-y-6">
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              With less than a month to go before the European Union enacts new
-              consumer privacy laws for its citizens, companies around the world
-              are updating their terms of service agreements to comply.
-            </p>
-            <p className="text-base leading-relaxed text-gray-500 dark:text-gray-400">
-              The European Union’s General Data Protection Regulation (G.D.P.R.)
-              goes into effect on May 25 and is meant to ensure a common set of
-              data rights in the European Union. It requires organizations to
-              notify users as soon as possible of high-risk data breaches that
-              could personally affect them.
-            </p>
-          </div>
+          <form onSubmit={(e) => handleSubmitForm(e)} className="space-y-6">
+            <TextInput
+              type="text"
+              placeholder="firstName"
+              name="firstName"
+              required
+              value={handleInput?.firstName}
+              onChange={(e) =>
+                setHandleInput({
+                  ...handleInput,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />{" "}
+            <TextInput
+              type="text"
+              placeholder="lastName"
+              name="lastName"
+              required
+              value={handleInput?.lastName}
+              onChange={(e) =>
+                setHandleInput({
+                  ...handleInput,
+                  [e.target.name]: e.target.value,
+                })
+              }
+            />
+            <Button type="submit">Save</Button>
+          </form>
         </Modal.Body>
-        <Modal.Footer>
-          <Button onClick={() => dispatch(editIsModal())}>I accept</Button>
-        </Modal.Footer>
       </Modal>
     </>
   );

@@ -25,7 +25,7 @@ export default function NavbarTop() {
             </Navbar.Link>
           </Link>
           <Link to={"/evalution"}>
-            <Navbar.Link className="flex items-center justify-center h-full">
+            <Navbar.Link  className="flex items-center justify-center h-full">
               Evaluation
             </Navbar.Link>
           </Link>
